@@ -1,5 +1,15 @@
 import type { AppProps } from 'next/app';
+import { Poppins } from 'next/font/google';
+
+const popins = Poppins({
+  weight: ['400', '500', '700', '900'],
+  subsets: ['latin'],
+});
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <div className={popins.className}>
+      <Component {...pageProps} />;
+    </div>
+  );
 }
