@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app';
 import { Poppins } from 'next/font/google';
+import '@/styles/global.scss';
 
 const popins = Poppins({
   weight: ['400', '500', '700', '900'],
