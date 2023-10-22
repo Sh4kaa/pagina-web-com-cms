@@ -1,16 +1,16 @@
-import styles from '@/components/Header/styles.module.scss';
-import Image from 'next/image';
-import Link from 'next/link';
-import logo from '@/../public/images/logo.svg';
-import ActiveLink from '../ActiveLink';
+import styles from '@/components/Header/styles.module.scss'
+import Image from 'next/image'
+import logo from '@/../public/images/logo.svg'
+import ActiveLink from '../ActiveLink'
+import Link from 'next/link'
 
 export default function Header() {
   return (
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
-        <a>
+        <Link href="/">
           <Image src={logo} alt="Sujeito programador Logo" />
-        </a>
+        </Link>
         <nav>
           <ActiveLink href="/" activeClassName={styles.active}>
             Home
@@ -29,5 +29,5 @@ export default function Header() {
         </a>
       </div>
     </header>
-  );
+  )
 }
