@@ -6,11 +6,16 @@ import Image from 'next/image'
 import techsImage from '@/../public/images/techs.svg'
 
 
+type Props = {
+  page: {
+    data: {
+      title: string
+    }
+  }
+}
 
-
-
-export default function Home() {
-
+export default function Home({ page }: Props) {
+  if (!page) return null
   return (
     <>
       <Head>
@@ -19,7 +24,9 @@ export default function Home() {
       <main className={styles.container}>
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
-            <h1>Levando você ao próximo nível!</h1>
+
+            <h1>{page.data.title}</h1>
+
             <span>Uma plataforma com cursos que vão do zero até o profissional na pratica, direto ao ponto aplicando o que usamos no mercado de trabalho. 👊</span>
             <a>
               <button>
@@ -64,9 +71,6 @@ export default function Home() {
             <button>ACESSAR TURMA!</button>
           </a>
         </div>
-
-
-
       </main>
     </>
   )
@@ -78,15 +82,14 @@ export const getStaticProps = async ({
 }: GetStaticPropsContext) => {
   const client = createClient({ previewData })
   //    ^ Automatically contains references to document types
-
   const page = await client.getSingle('title')
 
-
   //    ^ Typed as PageDocument
-  console.log(page.data.title)
+
+
   return {
     props: {
-
+      page
     },
   }
 }
