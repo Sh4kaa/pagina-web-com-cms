@@ -1,6 +1,6 @@
 {
   "id": "title",
-  "label": "title",
+  "label": "home",
   "format": "custom",
   "repeatable": false,
   "status": true,
@@ -10,6 +10,13 @@
         "type": "Text",
         "config": {
           "label": "home",
+          "placeholder": ""
+        }
+      },
+      "subtitulo": {
+        "type": "Text",
+        "config": {
+          "label": "subtitulo",
           "placeholder": ""
         }
       }

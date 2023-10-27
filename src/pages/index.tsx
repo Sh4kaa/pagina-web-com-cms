@@ -7,15 +7,15 @@ import techsImage from '@/../public/images/techs.svg'
 
 
 type Props = {
-  page: {
-    data: {
-      title: string
-    }
+  data: {
+    title: string,
+    paragrafo: string
   }
 }
 
-export default function Home({ page }: Props) {
-  if (!page) return null
+
+export default function Home({ data }: Props) {
+  if (!data) return null
   return (
     <>
       <Head>
@@ -25,9 +25,9 @@ export default function Home({ page }: Props) {
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
 
-            <h1>{page.data.title}</h1>
+            <h1>{data.title}</h1>
 
-            <span>Uma plataforma com cursos que vão do zero até o profissional na pratica, direto ao ponto aplicando o que usamos no mercado de trabalho. 👊</span>
+            <span>{data.paragrafo}</span>
             <a>
               <button>
                 vamos começar
@@ -84,12 +84,20 @@ export const getStaticProps = async ({
   //    ^ Automatically contains references to document types
   const page = await client.getSingle('title')
 
+
   //    ^ Typed as PageDocument
+  const data = {
+    title: page.data.title,
+    paragrafo: page.data.subtitulo
+  }
+
+  console.log(data)
+  console.log(page)
 
 
   return {
     props: {
-      page
+      data
     },
   }
 }

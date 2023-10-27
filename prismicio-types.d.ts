@@ -5,11 +5,11 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 /**
- * Content for title documents
+ * Content for home documents
  */
 interface TitleDocumentData {
   /**
-   * home field in *title*
+   * home field in *home*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -18,10 +18,21 @@ interface TitleDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   title: prismic.KeyTextField;
+
+  /**
+   * subtitulo field in *home*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: title.subtitulo
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitulo: prismic.KeyTextField;
 }
 
 /**
- * title document from Prismic
+ * home document from Prismic
  *
  * - **API ID**: `title`
  * - **Repeatable**: `false`
