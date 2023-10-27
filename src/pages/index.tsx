@@ -1,14 +1,20 @@
+import { GetStaticPropsContext } from 'next'
+import { createClient } from "@/prismicio"
 import Head from 'next/head'
 import styles from '@/styles/home.module.scss'
 import Image from 'next/image'
-
 import techsImage from '@/../public/images/techs.svg'
 
+
+
+
+
 export default function Home() {
+
   return (
     <>
       <Head>
-        <title>Apaixonado por tecnologia - Sujeito Programador</title>
+        <title>Sujeito | Home</title>
       </Head>
       <main className={styles.container}>
         <div className={styles.containerHeader}>
@@ -17,7 +23,7 @@ export default function Home() {
             <span>Uma plataforma com cursos que vão do zero até o profissional na pratica, direto ao ponto aplicando o que usamos no mercado de trabalho. 👊</span>
             <a>
               <button>
-                COMEÇAR AGORA!
+                vamos começar
               </button>
             </a>
           </section>
@@ -65,3 +71,23 @@ export default function Home() {
     </>
   )
 }
+
+
+export const getStaticProps = async ({
+  previewData,
+}: GetStaticPropsContext) => {
+  const client = createClient({ previewData })
+  //    ^ Automatically contains references to document types
+
+  const page = await client.getSingle('title')
+
+
+  //    ^ Typed as PageDocument
+  console.log(page.data.title)
+  return {
+    props: {
+
+    },
+  }
+}
+
