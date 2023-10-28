@@ -10,7 +10,9 @@
     "slicemachine": "start-slicemachine"
   },
   "dependencies": {
+    "@prismicio/client": "^5.1.0",
     "next": "13.5.4",
+    "prismic-dom": "^2.2.7",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
