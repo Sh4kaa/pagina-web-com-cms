@@ -1,21 +1,16 @@
-import { GetStaticPropsContext } from 'next'
-import { createClient } from "@/prismicio"
+import { GetStaticProps } from 'next'
+import Prismic from '@prismicio/client'
 import Head from 'next/head'
 import styles from '@/styles/home.module.scss'
 import Image from 'next/image'
 import techsImage from '@/../public/images/techs.svg'
+import { getPrismicClient } from '@/services/prismic'
 
 
-type Props = {
-  data: {
-    title: string,
-    paragrafo: string
-  }
-}
 
 
-export default function Home({ data }: Props) {
-  if (!data) return null
+export default function Home() {
+
   return (
     <>
       <Head>
@@ -25,9 +20,9 @@ export default function Home({ data }: Props) {
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
 
-            <h1>{data.title}</h1>
+            <h1>opa</h1>
 
-            <span>{data.paragrafo}</span>
+            <span>sergwertert</span>
             <a>
               <button>
                 vamos começar
@@ -77,28 +72,16 @@ export default function Home({ data }: Props) {
 }
 
 
-export const getStaticProps = async ({
-  previewData,
-}: GetStaticPropsContext) => {
-  const client = createClient({ previewData })
-  //    ^ Automatically contains references to document types
-  const page = await client.getSingle('title')
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient()
+  const response = await prismic.query([
+    Prismic.Predicates.at('document.type', 'home')
+  ])
 
-
-  //    ^ Typed as PageDocument
-  const data = {
-    title: page.data.title,
-    paragrafo: page.data.subtitulo
-  }
-
-  console.log(data)
-  console.log(page)
-
-
+  console.log(response)
   return {
     props: {
-      data
-    },
+
+    }
   }
 }
-
