@@ -6,13 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "slicemachine": "start-slicemachine"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@prismicio/client": "^5.1.0",
+    "@prismicio/client": "^7.3.1",
+    "@prismicio/react": "^2.7.3",
     "next": "13.5.4",
-    "prismic-dom": "^2.2.7",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0",

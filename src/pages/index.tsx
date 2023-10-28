@@ -1,11 +1,11 @@
 import { GetStaticProps } from 'next'
-import Prismic from '@prismicio/client'
 import Head from 'next/head'
 import styles from '@/styles/home.module.scss'
 import Image from 'next/image'
 import techsImage from '@/../public/images/techs.svg'
-import { getPrismicClient } from '@/services/prismic'
-import { RichText } from 'prismic-dom'
+import { PrismicRichText, useFirstPrismicDocument } from '@prismicio/react'
+import { title } from 'process'
+
 
 
 type Content = {
@@ -24,7 +24,35 @@ interface ContentProps {
   content: Content;
 }
 
-export default function Home({ content }: ContentProps) {
+export default function Home() {
+  const [document] = useFirstPrismicDocument()
+  const content: Content = {} as Content
+  if (document) {
+    const {
+      link_action,
+      mobile, mobile_banner,
+      mobile_content, sub_title,
+      title, title_web, web_banner,
+      web_content
+    } = document.data
+
+    content.title = title[0].text
+    content.linkAction = link_action
+    content.mobileContent = mobile_content
+    content.mobileBanner = mobile_banner
+    content.mobileTitle = mobile
+    content.webTitle = title_web
+    content.webContent = web_content
+    content.titleContent = sub_title
+    content.webBanner = web_banner
+  }
+
+
+
+
+
+
+
 
   return (
     <>
@@ -34,10 +62,11 @@ export default function Home({ content }: ContentProps) {
       <main className={styles.container}>
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
-            <h1>{content.title}</h1>
-            <span>{content.titleContent}</span>
-            <a href={content.linkAction}>
+            <h1>Olsdfhowser</h1>
+            <span>sartgwertwertwertwertwert</span>
+            <a href="">
               <button>
+
                 COMEÇAR AGORA!
               </button>
             </a>
@@ -53,21 +82,21 @@ export default function Home({ content }: ContentProps) {
 
         <div className={styles.sectionContent}>
           <section>
-            <h2>{content.mobileTitle}</h2>
-            <span>{content.mobileContent}</span>
+            <h2>{content.title}</h2>
+            <span>faswertwertwerwer</span>
           </section>
 
-          <img src={content.mobileBanner} alt="Conteúdos desenvolvimento de apps" />
+          <img src="" alt="Conteúdos desenvolvimento de apps" />
         </div>
 
         <hr className={styles.divisor} />
 
         <div className={styles.sectionContent}>
-          <img src={content.webBanner} alt="Conteúdos desenvolvimento de aplicacoes web" />
+          <img src="" alt="Conteúdos desenvolvimento de aplicacoes web" />
 
           <section>
-            <h2>{content.webTitle}</h2>
-            <span>{content.webContent}</span>
+            <h2>gwesdrtwertwertewrt</h2>
+            <span>sedfserwer</span>
           </section>
         </div>
 
@@ -75,7 +104,7 @@ export default function Home({ content }: ContentProps) {
           <Image quality={100} src={techsImage} alt="Tecnologias" />
           <h2>Mais de <span className={styles.alunos}>15 mil</span> já levaram sua carreira ao próximo nivel.</h2>
           <span>E você vai perder a chance de evoluir de uma vez por todas?</span>
-          <a href={content.linkAction}>
+          <a href="">
             <button>ACESSAR TURMA!</button>
           </a>
         </div>
@@ -85,34 +114,31 @@ export default function Home({ content }: ContentProps) {
 }
 
 
-export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicClient()
-  const response = await prismic.query([
-    Prismic.Predicates.at('document.type', 'home')
-  ])
-  const {
-    title, sub_title, link_action,
-    mobile, mobile_content, mobile_banner,
-    title_web, web_content, web_banner
-  } = response.results[0].data
+// export const getStaticProps: GetStaticProps = async () => {
 
-  const content = {
-    title: RichText.asText(title),
-    titleContent: RichText.asText(sub_title),
-    linkAction: link_action.url,
-    mobileTitle: RichText.asText(mobile),
-    mobileContent: RichText.asText(mobile_content),
-    mobileBanner: mobile_banner.url,
-    webTitle: RichText.asText(title_web),
-    webContent: RichText.asText(web_content),
-    webBanner: web_banner.url
-  }
-  console.log(content)
+//   const {
+//     title, sub_title, link_action,
+//     mobile, mobile_content, mobile_banner,
+//     title_web, web_content, web_banner
+//   } = response.results[0].data
 
-  return {
-    props: {
-      content
-    },
-    revalidate: 60 * 2
-  }
-}
+//   const content = {
+//     title: RichText.asText(title),
+//     titleContent: RichText.asText(sub_title),
+//     linkAction: link_action.url,
+//     mobileTitle: RichText.asText(mobile),
+//     mobileContent: RichText.asText(mobile_content),
+//     mobileBanner: mobile_banner.url,
+//     webTitle: RichText.asText(title_web),
+//     webContent: RichText.asText(web_content),
+//     webBanner: web_banner.url
+//   }
+
+
+//   return {
+//     props: {
+
+//     },
+
+//   }
+// }
