@@ -1,58 +1,24 @@
-import { GetStaticProps } from 'next'
+
 import Head from 'next/head'
 import styles from '@/styles/home.module.scss'
 import Image from 'next/image'
 import techsImage from '@/../public/images/techs.svg'
-import { PrismicRichText, useFirstPrismicDocument } from '@prismicio/react'
-import { title } from 'process'
+import { useFirstPrismicDocument } from '@prismicio/react'
+import dataPrismic, { Content } from '@/utils/prismic_data'
 
 
 
-type Content = {
-  title: string;
-  titleContent: string;
-  linkAction: string;
-  mobileTitle: string;
-  mobileContent: string;
-  mobileBanner: string;
-  webTitle: string;
-  webContent: string;
-  webBanner: string;
-}
 
-interface ContentProps {
-  content: Content;
-}
+
+
+
 
 export default function Home() {
   const [document] = useFirstPrismicDocument()
-  const content: Content = {} as Content
+  let content: Content = {} as Content
   if (document) {
-    const {
-      link_action,
-      mobile, mobile_banner,
-      mobile_content, sub_title,
-      title, title_web, web_banner,
-      web_content
-    } = document.data
-
-    content.title = title[0].text
-    content.linkAction = link_action
-    content.mobileContent = mobile_content
-    content.mobileBanner = mobile_banner
-    content.mobileTitle = mobile
-    content.webTitle = title_web
-    content.webContent = web_content
-    content.titleContent = sub_title
-    content.webBanner = web_banner
+    content = dataPrismic(document)
   }
-
-
-
-
-
-
-
 
   return (
     <>
@@ -62,8 +28,8 @@ export default function Home() {
       <main className={styles.container}>
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
-            <h1>Olsdfhowser</h1>
-            <span>sartgwertwertwertwertwert</span>
+            <h1>{content.title}</h1>
+            <span>asdfwert4</span>
             <a href="">
               <button>
 
