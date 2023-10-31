@@ -6,7 +6,7 @@ import styles from '../styles/home.module.scss'
 import Image from 'next/image'
 import techsImage from '../../public/images/techs.svg'
 
-import { getPrismicClient } from '../services/prismic'
+import { getPrismicClient } from '@/services/prismic'
 import Prismic from '@prismicio/client'
 import { RichText } from 'prismic-dom'
 
@@ -116,7 +116,7 @@ export const getStaticProps: GetStaticProps = async () => {
     webBanner: web_banner.url
   }
 
-
+  console.log(content.title)
   return {
     props: {
       content

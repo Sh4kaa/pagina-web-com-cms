@@ -8,3 +8,7 @@ trim_trailing_whitespace = true
 quote_type = single
 [.editorconfig]
 end_of_line = lf
+[next.config.js]
+quote_type = single
+indent_size = 2
+end_of_line = lf
