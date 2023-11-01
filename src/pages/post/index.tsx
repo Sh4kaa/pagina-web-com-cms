@@ -40,7 +40,7 @@ export default function Posts({ posts: postsBlog }: PostsProps) {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map(post => (
-            <Link key={post.slug} href={`/posts/${post.slug}`}>
+            <Link key={post.slug} href={`/post/${post.slug}`}>
 
               <Image
                 src={post.cover}
