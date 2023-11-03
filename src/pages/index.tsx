@@ -1,32 +1,31 @@
 import { GetStaticProps } from 'next'
-
 import Head from 'next/head'
 import styles from '../styles/home.module.scss'
-
 import Image from 'next/image'
-import techsImage from '../../public/images/techs.svg'
+// import techsImage from '../../public/images/techs.svg'
+import type { GetStaticPropsContext } from 'next'
+import { createClient } from '../prismicio'
 
-import { getPrismicClient } from '@/services/prismic'
-import Prismic from '@prismicio/client'
-import { RichText } from 'prismic-dom'
+import type { Content } from '@prismicio/client'
 
-type Content = {
-  title: string;
-  titleContent: string;
-  linkAction: string;
-  mobileTitle: string;
-  mobileContent: string;
-  mobileBanner: string;
-  webTitle: string;
-  webContent: string;
-  webBanner: string;
-}
 
-interface ContentProps {
-  content: Content;
-}
+// type Content = {
+//   title: string;
+//   titleContent: string;
+//   linkAction: string;
+//   mobileTitle: string;
+//   mobileContent: string;
+//   mobileBanner: string;
+//   webTitle: string;
+//   webContent: string;
+//   webBanner: string;
+// }
 
-export default function Home({ content }: ContentProps) {
+// interface ContentProps {
+//   content: Content;
+// }
+
+export default function Home() {
 
   return (
     <>
@@ -34,7 +33,7 @@ export default function Home({ content }: ContentProps) {
         <title>Apaixonado por tecnologia - Sujeito Programador</title>
       </Head>
       <main className={styles.container}>
-        <div className={styles.containerHeader}>
+        {/* <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
             <h1>{content.title}</h1>
             <span>{content.titleContent}</span>
@@ -80,7 +79,7 @@ export default function Home({ content }: ContentProps) {
           <a href={content.linkAction}>
             <button>ACESSAR TURMA!</button>
           </a>
-        </div>
+        </div> */}
 
 
       </main>
@@ -88,39 +87,19 @@ export default function Home({ content }: ContentProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicClient()
+export async function getStaticProps({
+  previewData,
+}: GetStaticPropsContext) {
+  const client = createClient({ previewData })
+  //    ^ Automatically contains references to document types
 
-
-  const response = await prismic.query([
-    Prismic.Predicates.at('document.type', 'home')
-  ])
-
-  // console.log(response.results[0].data);
-
-  const {
-    title, sub_title, link_action,
-    mobile, mobile_content, mobile_banner,
-    title_web, web_content, web_banner
-  } = response.results[0].data
-
-  const content = {
-    title: RichText.asText(title),
-    titleContent: RichText.asText(sub_title),
-    linkAction: link_action.url,
-    mobileTitle: RichText.asText(mobile),
-    mobileContent: RichText.asText(mobile_content),
-    mobileBanner: mobile_banner.url,
-    webTitle: RichText.asText(title_web),
-    webContent: RichText.asText(web_content),
-    webBanner: web_banner.url
-  }
-
-  console.log(content.title)
+  const page = await client.getByUID('home', 'title-cabecalho')
+  //    ^ Typed as PageDocument
+  console.log(page.data.title)
   return {
     props: {
-      content
+      page,
     },
-    revalidate: 60 * 2 // A cada 2 minutos
+
   }
 }

@@ -1,0 +1,86 @@
+{
+  "id": "home",
+  "label": "home",
+  "repeatable": false,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "uid"
+        }
+      },
+      "title": {
+        "type": "StructuredText",
+        "config": {
+          "single": "heading1",
+          "label": "title"
+        }
+      },
+      "sub_title": {
+        "type": "StructuredText",
+        "config": {
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true,
+          "label": "sub title"
+        }
+      },
+      "link_action": {
+        "type": "Link",
+        "config": {
+          "allowTargetBlank": true,
+          "label": "link action",
+          "select": null
+        }
+      },
+      "mobile": {
+        "type": "StructuredText",
+        "config": {
+          "single": "heading2",
+          "label": "mobile"
+        }
+      },
+      "mobile_content": {
+        "type": "StructuredText",
+        "config": {
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true,
+          "label": "mobile content"
+        }
+      },
+      "mobile_banner": {
+        "type": "Image",
+        "config": {
+          "constraint": {},
+          "thumbnails": [],
+          "label": "mobile banner"
+        }
+      },
+      "title_web": {
+        "type": "StructuredText",
+        "config": {
+          "single": "heading1,heading2,heading3,heading4,heading5,heading6",
+          "label": "title web"
+        }
+      },
+      "web_content": {
+        "type": "StructuredText",
+        "config": {
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true,
+          "label": "web content"
+        }
+      },
+      "web_banner": {
+        "type": "Image",
+        "config": {
+          "constraint": {},
+          "thumbnails": [],
+          "label": "web banner"
+        }
+      }
+    }
+  },
+  "status": true,
+  "format": "custom"
+}
