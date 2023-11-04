@@ -2,6 +2,8 @@
   "id": "home",
   "label": "home",
   "repeatable": false,
+  "status": true,
+  "format": "custom",
   "json": {
     "Main": {
       "uid": {
@@ -20,9 +22,10 @@
       "sub_title": {
         "type": "StructuredText",
         "config": {
-          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "label": "Titulo",
+          "placeholder": "",
           "allowTargetBlank": true,
-          "label": "sub title"
+          "multi": "heading2"
         }
       },
       "link_action": {
@@ -80,7 +83,5 @@
         }
       }
     }
-  },
-  "status": true,
-  "format": "custom"
+  }
 }

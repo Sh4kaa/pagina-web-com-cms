@@ -20,7 +20,7 @@ interface HomeDocumentData {
   title: prismic.TitleField;
 
   /**
-   * sub title field in *home*
+   * Titulo field in *home*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
