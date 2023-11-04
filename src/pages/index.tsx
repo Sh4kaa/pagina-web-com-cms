@@ -3,30 +3,32 @@ import Head from 'next/head'
 import styles from '../styles/home.module.scss'
 import Image from 'next/image'
 import techsImage from '../../public/images/techs.svg'
-import type { GetStaticPropsContext } from 'next'
+import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { createClient } from '@/prismicio'
 
 
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 
 
-type Contentt = {
-  title: string;
-  titleContent: string;
-  linkAction: string;
-  mobileTitle: string;
-  mobileContent: string;
-  mobileBanner: string;
-  webTitle: string;
-  webContent: string;
-  webBanner: string;
-}
 
-interface ContentProps {
-  content: Contentt;
-}
+// type Contentt = {
+//   title: string;
+//   titleContent: string;
+//   linkAction: string;
+//   mobileTitle: string;
+//   mobileContent: string;
+//   mobileBanner: string;
+//   webTitle: string;
+//   webContent: string;
+//   webBanner: string;
+// }
 
-export default function Home({ content }: ContentProps) {
+// interface ContentProps {
+//   content: Contentt;
+// }
+
+export default function Home({ content }: PageProps) {
 
   return (
     <>
@@ -38,7 +40,9 @@ export default function Home({ content }: ContentProps) {
         <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
             <h1>{content.title}</h1>
-            <span>{content.titleContent}</span>
+            <span>
+              {content.titleContent}
+            </span>
             <a href={content.linkAction}>
               <button>
                 COMEÇAR AGORA!
@@ -101,14 +105,14 @@ export async function getStaticProps({
 
   const content = {
     title: page.data.title[0]?.text,
-    titleContent: page.data.sub_title[0]?.type,
+    titleContent: page.data.sub_title.map(item => item.type === 'heading2' ? item.text : ''),
     linkAction: page.data.link_action,
     mobileTitle: page.data.mobile[0]?.text,
-    mobileContent: page.data.mobile_content[0]?.type,
-    mobileBanner: page.data.mobile_banner,
+    mobileContent: page.data.mobile_content.map(item => item.type === 'paragraph' ? item.text : '')[0],
+    mobileBanner: page.data.mobile_banner.url,
     webTitle: page.data.title_web[0]?.text,
-    webContent: page.data.web_content[0]?.type,
-    webBanner: page.data.web_banner,
+    webContent: page.data.web_content.map(item => item.type === 'paragraph' ? item.text : '')[0],
+    webBanner: page.data.web_banner.url,
   }
 
   console.log(content)
