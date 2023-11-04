@@ -8,11 +8,9 @@ import { createClient } from '@/prismicio'
 
 
 
-// import type { Content } from '@prismicio/client'
 
 
-
-type Content = {
+type Contentt = {
   title: string;
   titleContent: string;
   linkAction: string;
@@ -25,7 +23,7 @@ type Content = {
 }
 
 interface ContentProps {
-  content: Content;
+  content: Contentt;
 }
 
 export default function Home({ content }: ContentProps) {
@@ -100,19 +98,20 @@ export async function getStaticProps({
   const page = await client.getByUID('home', 'title-cabecalho')
   //    ^ Typed as PageDocument
 
+
   const content = {
     title: page.data.title[0]?.text,
-    titleContent: page.data.sub_title[0]?.text,
+    titleContent: page.data.sub_title[0]?.type,
     linkAction: page.data.link_action,
-    mobileTitle: page.data.mobile,
-    mobileContent: page.data.mobile_content,
+    mobileTitle: page.data.mobile[0]?.text,
+    mobileContent: page.data.mobile_content[0]?.type,
     mobileBanner: page.data.mobile_banner,
-    webTitle: page.data.title_web,
-    webContent: page.data.web_content,
+    webTitle: page.data.title_web[0]?.text,
+    webContent: page.data.web_content[0]?.type,
     webBanner: page.data.web_banner,
   }
-  console.log(content)
 
+  console.log(content)
   return {
     props: {
       content,
