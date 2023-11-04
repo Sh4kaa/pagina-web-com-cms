@@ -1,39 +1,43 @@
-import { GetStaticProps } from 'next'
+
 import Head from 'next/head'
 import styles from '../styles/home.module.scss'
 import Image from 'next/image'
-// import techsImage from '../../public/images/techs.svg'
+import techsImage from '../../public/images/techs.svg'
 import type { GetStaticPropsContext } from 'next'
-import { createClient } from '../prismicio'
-
-import type { Content } from '@prismicio/client'
+import { createClient } from '@/prismicio'
 
 
-// type Content = {
-//   title: string;
-//   titleContent: string;
-//   linkAction: string;
-//   mobileTitle: string;
-//   mobileContent: string;
-//   mobileBanner: string;
-//   webTitle: string;
-//   webContent: string;
-//   webBanner: string;
-// }
 
-// interface ContentProps {
-//   content: Content;
-// }
+// import type { Content } from '@prismicio/client'
 
-export default function Home() {
+
+
+type Content = {
+  title: string;
+  titleContent: string;
+  linkAction: string;
+  mobileTitle: string;
+  mobileContent: string;
+  mobileBanner: string;
+  webTitle: string;
+  webContent: string;
+  webBanner: string;
+}
+
+interface ContentProps {
+  content: Content;
+}
+
+export default function Home({ content }: ContentProps) {
 
   return (
     <>
       <Head>
         <title>Apaixonado por tecnologia - Sujeito Programador</title>
       </Head>
+
       <main className={styles.container}>
-        {/* <div className={styles.containerHeader}>
+        <div className={styles.containerHeader}>
           <section className={styles.ctaText}>
             <h1>{content.title}</h1>
             <span>{content.titleContent}</span>
@@ -79,7 +83,7 @@ export default function Home() {
           <a href={content.linkAction}>
             <button>ACESSAR TURMA!</button>
           </a>
-        </div> */}
+        </div>
 
 
       </main>
@@ -95,11 +99,24 @@ export async function getStaticProps({
 
   const page = await client.getByUID('home', 'title-cabecalho')
   //    ^ Typed as PageDocument
-  console.log(page.data.title)
+
+  const content = {
+    title: page.data.title[0]?.text,
+    titleContent: page.data.sub_title[0]?.text,
+    linkAction: page.data.link_action,
+    mobileTitle: page.data.mobile,
+    mobileContent: page.data.mobile_content,
+    mobileBanner: page.data.mobile_banner,
+    webTitle: page.data.title_web,
+    webContent: page.data.web_content,
+    webBanner: page.data.web_banner,
+  }
+  console.log(content)
+
   return {
     props: {
-      page,
-    },
+      content,
+    }
 
   }
 }
