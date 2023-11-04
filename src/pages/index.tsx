@@ -5,6 +5,8 @@ import Image from 'next/image'
 import techsImage from '../../public/images/techs.svg'
 import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { createClient } from '@/prismicio'
+import { asHTML } from '@prismicio/helpers'
+import { asLink } from '@prismicio/client'
 
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
@@ -105,13 +107,13 @@ export async function getStaticProps({
 
   const content = {
     title: page.data.title[0]?.text,
-    titleContent: page.data.sub_title.map(item => item.type === 'heading2' ? item.text : ''),
-    linkAction: page.data.link_action,
-    mobileTitle: page.data.mobile[0]?.text,
-    mobileContent: page.data.mobile_content.map(item => item.type === 'paragraph' ? item.text : '')[0],
+    titleContent: asHTML(page.data.sub_title),
+    linkAction: asLink(page.data.link_action),
+    mobileTitle: asHTML(page.data.mobile),
+    mobileContent: asHTML(page.data.mobile_content),
     mobileBanner: page.data.mobile_banner.url,
-    webTitle: page.data.title_web[0]?.text,
-    webContent: page.data.web_content.map(item => item.type === 'paragraph' ? item.text : '')[0],
+    webTitle: asHTML(page.data.title_web),
+    webContent: asHTML(page.data.web_content),
     webBanner: page.data.web_banner.url,
   }
 
