@@ -19,6 +19,39 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
   const [currentPage, setCurrentPage] = useState(page)
   const [posts, setPosts] = useState(postsBlog || [])
 
+  const navigatePage = async (pageNumber: number) => {
+    const response = await reqPost(pageNumber)
+    if (response.results.length === 0) {
+      return
+    }
+    const getPosts = response.results.map(post => {
+      return {
+        slug: post.uid,
+        title: asText(post.data.title),
+        description: post.data.description[0]?.type === 'paragraph' ? post.data.description[0].text : '',
+        cover: post.data.cover.url ?? '',
+        updateAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        })
+      }
+    })
+    setCurrentPage(pageNumber)
+    setPosts(getPosts)
+  }
+
+  const reqPost = async (pageNumber: number) => {
+    const prismic = createClient()
+    const response = await prismic.getByType('post', {
+      orderings: [{ field: 'document.last_publication_date', direction: 'desc', }],
+      fetch: ['post.title', 'post.description', 'post.cover'],
+      pageSize: 1,
+      page: pageNumber
+    })
+    return response
+  }
+
   return (
     <>
       <Head>
@@ -28,7 +61,6 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
         <div className={styles.posts}>
           {posts.map(post => (
             <Link key={post.slug} href={`/post/${post.slug}`}>
-
               <Image
                 src={post.cover}
                 alt={post.title}
@@ -45,24 +77,24 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
             </Link>
           ))}
 
+          {/* lógica das passagens de páginas */}
           <div className={styles.buttonNavigate}>
             {currentPage >= 2 && (
               <div>
-                <button>
+                <button onClick={() => navigatePage(1)}>
                   <FiChevronsLeft size={25} color="#FFF" />
                 </button>
-                <button>
+                <button onClick={() => navigatePage(currentPage - 1)}>
                   <FiChevronLeft size={25} color="#FFF" />
                 </button>
               </div>
             )}
-
             {currentPage <= totalPages && (
               <div>
-                <button>
+                <button onClick={() => navigatePage(currentPage + 1)}>
                   <FiChevronRight size={25} color="#FFF" />
                 </button>
-                <button>
+                <button onClick={() => navigatePage(totalPages)}>
                   <FiChevronsRight size={25} color="#FFF" />
                 </button>
               </div>
@@ -76,14 +108,14 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
 }
 
 export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+  /* Conectando a API */
   const client = createClient({ previewData })
-
   const post = await client.getByType('post', {
     orderings: [{ field: 'document.last_publication_date', direction: 'desc', }],
     fetch: ['post.title', 'post.description', 'post.cover'],
     pageSize: 1,
   })
-
+  /* Filtrando retorno da API de postagens */
   const posts = post.results.map(post => {
     return {
       slug: post.uid,
@@ -98,9 +130,11 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
     }
   })
 
-
-
   return {
-    props: { posts, totalPages: post.total_pages, page: post.page }
+    props: {
+      posts,
+      totalPages: post.total_pages,
+      page: post.page
+    }
   }
 }
