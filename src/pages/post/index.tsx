@@ -89,7 +89,7 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
                 </button>
               </div>
             )}
-            {currentPage <= totalPages && (
+            {currentPage < totalPages && (
               <div>
                 <button onClick={() => navigatePage(currentPage + 1)}>
                   <FiChevronRight size={25} color="#FFF" />
