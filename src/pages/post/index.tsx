@@ -1,34 +1,21 @@
-import { GetStaticProps } from 'next'
+import type { InferGetStaticPropsType, GetStaticPropsContext } from 'next'
 import { useState } from 'react'
-
 import Head from 'next/head'
-
 import styles from './styles.module.scss'
-import Link from 'next/link'
 
-import Image from 'next/image'
-
-// import { getPrismicClient } from '../../services/prismic'
-import Prismic from '@prismicio/client'
-// import { RichText } from 'prismic-dom'
+import { createClient } from '@/prismicio'
 
 // https://png-pixel.com/
 
 import { FiChevronLeft, FiChevronsLeft, FiChevronRight, FiChevronsRight } from 'react-icons/fi'
+import { asText } from '@prismicio/helpers'
+import Link from 'next/link'
+import Image from 'next/image'
 
-type Post = {
-  slug: string;
-  title: string;
-  cover: string;
-  description: string;
-  updatedAt: string
-}
+type Post = InferGetStaticPropsType<typeof getStaticProps>
 
-interface PostsProps {
-  posts: Post[];
-}
 
-export default function Posts({ posts: postsBlog }: PostsProps) {
+export default function Posts({ posts: postsBlog }: Post) {
 
   const [posts, setPosts] = useState(postsBlog || [])
 
@@ -52,7 +39,7 @@ export default function Posts({ posts: postsBlog }: PostsProps) {
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN0vQgAAWEBGHsgcxcAAAAASUVORK5CYII="
               />
               <strong>{post.title}</strong>
-              <time>{post.updatedAt}</time>
+              <time>{post.updateAt}</time>
               <p>{post.description}</p>
 
             </Link>
@@ -84,38 +71,32 @@ export default function Posts({ posts: postsBlog }: PostsProps) {
   )
 }
 
+export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+  const client = createClient({ previewData })
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const prismic = getPrismicClient()
+  const post = await client.getByType('post', {
+    orderings: [{ field: 'document.last_publication_date', direction: 'desc' }],
+    fetch: ['post.title', 'post.description', 'post.cover'],
+    pageSize: 1,
+  })
 
-//   const response = await prismic.query([
-//     Prismic.Predicates.at('document.type', 'post')
-//   ], {
-//     orderings: '[document.last_publication_date desc]', //Ordenar pelo mais recente
-//     fetch: ['post.title', 'post.description', 'post.cover'],
-//     pageSize: 3
-//   })
+  const posts = post.results.map(post => {
+    return {
+      slug: post.uid,
+      title: asText(post.data.title),
+      description: post.data.description[0]?.type === 'paragraph' ? post.data.description[0].text : '',
+      cover: post.data.cover.url ?? '',
+      updateAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
+  })
 
-//   // console.log(JSON.stringify(response, null, 2))
+  console.log(posts)
 
-//   const posts = response.results.map(post => {
-//     return {
-//       slug: post.uid,
-//       title: RichText.asText(post.data.title),
-//       description: post.data.description.find((content: any) => content.type === 'paragraph')?.text ?? '',
-//       cover: post.data.cover.url,
-//       updatedAt: new Date(String(post.last_publication_date)).toLocaleDateString('pt-BR', {
-//         day: '2-digit',
-//         month: 'long',
-//         year: 'numeric'
-//       })
-//     }
-//   })
-
-//   return {
-//     props: {
-//       posts
-//     },
-//     revalidate: 60 * 30 // Atualiza a cada 30 minutos.
-//   }
-// }
+  return {
+    props: { posts }
+  }
+}

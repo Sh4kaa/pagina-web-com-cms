@@ -8,27 +8,7 @@ import { asText } from '@prismicio/helpers'
 import { asLink } from '@prismicio/client'
 import Image from 'next/image'
 
-
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
-
-
-
-
-// type Contentt = {
-//   title: string;
-//   titleContent: string;
-//   linkAction: string;
-//   mobileTitle: string;
-//   mobileContent: string;
-//   mobileBanner: string;
-//   webTitle: string;
-//   webContent: string;
-//   webBanner: string;
-// }
-
-// interface ContentProps {
-//   content: Contentt;
-// }
 
 export default function Home({ content }: PageProps) {
 
@@ -97,11 +77,8 @@ export async function getStaticProps({
   previewData,
 }: GetStaticPropsContext) {
   const client = createClient({ previewData })
-  //    ^ Automatically contains references to document types
 
   const page = await client.getByUID('home', 'title-cabecalho')
-  //    ^ Typed as PageDocument
-
 
   const content = {
     title: asText(page.data.title),
@@ -114,8 +91,6 @@ export async function getStaticProps({
     webContent: asText(page.data.web_content),
     webBanner: page.data.web_banner.url,
   }
-
-  console.log(content)
   return {
     props: {
       content,
