@@ -15,8 +15,8 @@ import Image from 'next/image'
 type Post = InferGetStaticPropsType<typeof getStaticProps>
 
 
-export default function Posts({ posts: postsBlog }: Post) {
-
+export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
+  const [currentPage, setCurrentPage] = useState(page)
   const [posts, setPosts] = useState(postsBlog || [])
 
   return (
@@ -46,23 +46,27 @@ export default function Posts({ posts: postsBlog }: Post) {
           ))}
 
           <div className={styles.buttonNavigate}>
-            <div>
-              <button>
-                <FiChevronsLeft size={25} color="#FFF" />
-              </button>
-              <button>
-                <FiChevronLeft size={25} color="#FFF" />
-              </button>
-            </div>
+            {currentPage >= 2 && (
+              <div>
+                <button>
+                  <FiChevronsLeft size={25} color="#FFF" />
+                </button>
+                <button>
+                  <FiChevronLeft size={25} color="#FFF" />
+                </button>
+              </div>
+            )}
 
-            <div>
-              <button>
-                <FiChevronRight size={25} color="#FFF" />
-              </button>
-              <button>
-                <FiChevronsRight size={25} color="#FFF" />
-              </button>
-            </div>
+            {currentPage <= totalPages && (
+              <div>
+                <button>
+                  <FiChevronRight size={25} color="#FFF" />
+                </button>
+                <button>
+                  <FiChevronsRight size={25} color="#FFF" />
+                </button>
+              </div>
+            )}
 
           </div>
         </div>
@@ -75,7 +79,7 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
   const client = createClient({ previewData })
 
   const post = await client.getByType('post', {
-    orderings: [{ field: 'document.last_publication_date', direction: 'desc' }],
+    orderings: [{ field: 'document.last_publication_date', direction: 'desc', }],
     fetch: ['post.title', 'post.description', 'post.cover'],
     pageSize: 1,
   })
@@ -94,9 +98,9 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
     }
   })
 
-  console.log(posts)
+
 
   return {
-    props: { posts }
+    props: { posts, totalPages: post.total_pages, page: post.page }
   }
 }
