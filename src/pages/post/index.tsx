@@ -11,6 +11,7 @@ import { FiChevronLeft, FiChevronsLeft, FiChevronRight, FiChevronsRight } from '
 import { asText } from '@prismicio/helpers'
 import Link from 'next/link'
 import Image from 'next/image'
+import Loading from '@/components/Loading'
 
 type Post = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -18,8 +19,10 @@ type Post = InferGetStaticPropsType<typeof getStaticProps>
 export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
   const [currentPage, setCurrentPage] = useState(page)
   const [posts, setPosts] = useState(postsBlog || [])
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigatePage = async (pageNumber: number) => {
+    setIsLoading(true)
     const response = await reqPost(pageNumber)
     if (response.results.length === 0) {
       return
@@ -39,6 +42,7 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
     })
     setCurrentPage(pageNumber)
     setPosts(getPosts)
+    setIsLoading(false)
   }
 
   const reqPost = async (pageNumber: number) => {
@@ -51,7 +55,9 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
     })
     return response
   }
-
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <>
       <Head>
