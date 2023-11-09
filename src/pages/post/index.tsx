@@ -141,6 +141,7 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
       posts,
       totalPages: post.total_pages,
       page: post.page
-    }
+    },
+    revalidate: 60 * 2
   }
 }
