@@ -21,7 +21,7 @@ export default function Header() {
           </ActiveLink>
 
           <ActiveLink href="/about" activeClassName={styles.active}>
-            Quem somos?
+            Sobre
           </ActiveLink>
         </nav>
         <a className={styles.readyButton} href="https://github.com/Sh4kaa">
