@@ -55,6 +55,8 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
     })
     return response
   }
+
+
   if (isLoading) {
     return <Loading />
   }
@@ -121,6 +123,7 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
     fetch: ['post.title', 'post.description', 'post.cover'],
     pageSize: 1,
   })
+
   /* Filtrando retorno da API de postagens */
   const posts = post.results.map(post => {
     return {
@@ -135,7 +138,6 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
       })
     }
   })
-
   return {
     props: {
       posts,
