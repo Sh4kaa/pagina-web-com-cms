@@ -1,4 +1,4 @@
-import type { InferGetStaticPropsType, GetStaticPropsContext } from 'next'
+import type { InferGetStaticPropsType } from 'next'
 import { useState } from 'react'
 import Head from 'next/head'
 import styles from './styles.module.scss'
@@ -123,6 +123,12 @@ export const getStaticProps = async () => {
     fetch: ['post.title', 'post.description', 'post.cover'],
     pageSize: 1,
   })
+
+  if (!post) {
+    return {
+
+    }
+  }
 
   /* Filtrando retorno da API de postagens */
   const posts = post.results.map(post => {
