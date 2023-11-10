@@ -124,11 +124,6 @@ export const getStaticProps = async () => {
     pageSize: 1,
   })
 
-  if (!post) {
-    return {
-
-    }
-  }
 
   /* Filtrando retorno da API de postagens */
   const posts = post.results.map(post => {
