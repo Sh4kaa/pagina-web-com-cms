@@ -115,9 +115,9 @@ export default function Posts({ posts: postsBlog, totalPages, page }: Post) {
   )
 }
 
-export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+export const getStaticProps = async () => {
   /* Conectando a API */
-  const client = createClient({ previewData })
+  const client = createClient()
   const post = await client.getByType('post', {
     orderings: [{ field: 'document.last_publication_date', direction: 'desc', }],
     fetch: ['post.title', 'post.description', 'post.cover'],

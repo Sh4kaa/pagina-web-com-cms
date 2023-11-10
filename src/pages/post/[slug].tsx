@@ -1,20 +1,28 @@
 
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next"
 import { createClient } from "@/prismicio"
 import { CreateClientConfig } from "@prismicio/next"
 import { asHTML, asText } from "@prismicio/helpers"
 import Head from "next/head"
 import Image from "next/image"
 import styles from './post.module.scss'
+import { GetServerSidePropsContext } from "next"
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher"
 
 
 
+type PostProps = {
+  slug: string,
+  title: string,
+  description: string,
+  cover: string,
+  updatedAt: string
+}
 
+interface Post {
+  post: PostProps
+}
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
-type ParamsID = { slug: string }
-
-export default function Post({ post }: PageProps) {
+export default function Post({ post }: Post) {
 
 
   return (
@@ -45,9 +53,9 @@ export default function Post({ post }: PageProps) {
 }
 
 
-export const getServerSideProps = async ({ params, req }: GetServerSidePropsContext<ParamsID>) => {
-  const prismic = createClient(req as CreateClientConfig)
-  const data = await prismic.getByUID('post', String(params?.slug))
+export const getServerSideProps = async ({ params }: GetServerSidePropsContext<Params>, req: CreateClientConfig) => {
+  const prismic = createClient(req)
+  const data = await prismic.getByUID('post', params?.slug)
 
   const post = {
     slug: params?.slug,
