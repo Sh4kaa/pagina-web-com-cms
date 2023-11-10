@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import styles from '../styles/home.module.scss'
 import techsImage from '../../public/images/techs.svg'
-import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { createClient } from '@/prismicio'
 import { asText } from '@prismicio/helpers'
 import { asLink } from '@prismicio/client'
@@ -73,10 +73,8 @@ export default function Home({ content }: PageProps) {
   )
 }
 
-export async function getStaticProps({
-  previewData,
-}: GetStaticPropsContext) {
-  const client = createClient({ previewData })
+export const getStaticProps = async () => {
+  const client = createClient()
 
   const page = await client.getByUID('home', 'title-cabecalho')
 
@@ -94,7 +92,8 @@ export async function getStaticProps({
   return {
     props: {
       content,
-    }
+    },
+    revalidate: 60 * 2
 
   }
 }
