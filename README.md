@@ -28,6 +28,10 @@ bun dev
 
 [![My Skills](https://skillicons.dev/icons?i=ts,react,sass,next,js)](https://skillicons.dev) ![icons8-prismic-helps-developers-and-marketers-and-content-managers-to-work-on-websites-48](https://github.com/Sh4kaa/pagina-web-com-cms/assets/27507717/25d9975f-0a62-4e79-867c-56f5d144f2e7)
 
+## Prints
+![image](https://github.com/Sh4kaa/pagina-web-com-cms/assets/27507717/0a78bd0c-d113-4a8a-a479-65660c274924)
+### CMS
+![image](https://github.com/Sh4kaa/pagina-web-com-cms/assets/27507717/448a2582-c8b6-4373-ae36-592ed8be1d39)
 
 ## Deploy on Vercel
 
